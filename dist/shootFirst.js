@@ -53,13 +53,19 @@
 	
 	var _Device2 = _interopRequireDefault(_Device);
 	
-	var _Player = __webpack_require__(/*! ./Player.js */ 2);
+	var _Player = __webpack_require__(/*! ./Player.js */ 3);
 	
 	var _Player2 = _interopRequireDefault(_Player);
 	
-	var _State = __webpack_require__(/*! ./State.js */ 3);
+	var _State = __webpack_require__(/*! ./State.js */ 4);
 	
 	var _State2 = _interopRequireDefault(_State);
+	
+	var _constants = __webpack_require__(/*! ./constants.js */ 2);
+	
+	var _ServerHandler = __webpack_require__(/*! ./ServerHandler.js */ 5);
+	
+	var _ServerHandler2 = _interopRequireDefault(_ServerHandler);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -68,15 +74,33 @@
 	
 	    var player = void 0;
 	    var device = void 0;
+	    var gameElement = document.querySelector('#game');
 	
 	    function init() {
 	        var player = new _Player2.default();
 	        var device = new _Device2.default();
 	        var state = new _State2.default();
+	        var server = new _ServerHandler2.default();
+	        var button = void 0;
 	
+	        state.setState('init');
 	        device.init();
+	
+	        server.sendRequest(state.getCurrentState()).then(function (res) {
+	            gameElement.innerHTML = res;
+	            button = document.querySelector('#start_game');
+	            button.addEventListener('click', function () {
+	                alert('start!');
+	            });
+	        });
 	    }
+	
+	    return {
+	        init: init
+	    };
 	}();
+	
+	Game.init();
 
 /***/ },
 /* 1 */
@@ -93,7 +117,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _constants = __webpack_require__(/*! ./constants.js */ 4);
+	var _constants = __webpack_require__(/*! ./constants.js */ 2);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -123,6 +147,25 @@
 
 /***/ },
 /* 2 */
+/*!**************************!*\
+  !*** ./src/constants.js ***!
+  \**************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	var deviceDownDegs = 90;
+	var threshold = 15;
+	var waitTime = 3;
+	var state1 = "init";
+	var state2 = "waiting";
+	var state3 = "ready";
+	var state4 = "fire";
+	var state5 = "results";
+	var serverURL = 'https://jeex.us/app/hadarim/shoot';
+
+/***/ },
+/* 3 */
 /*!***********************!*\
   !*** ./src/Player.js ***!
   \***********************/
@@ -160,7 +203,7 @@
 	exports.default = Player;
 
 /***/ },
-/* 3 */
+/* 4 */
 /*!**********************!*\
   !*** ./src/State.js ***!
   \**********************/
@@ -201,17 +244,76 @@
 	exports.default = State;
 
 /***/ },
-/* 4 */
-/*!**************************!*\
-  !*** ./src/constants.js ***!
-  \**************************/
+/* 5 */
+/*!******************************!*\
+  !*** ./src/ServerHandler.js ***!
+  \******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _constants = __webpack_require__(/*! ./constants.js */ 2);
+	
+	var _request = __webpack_require__(/*! ./request.js */ 6);
+	
+	var _request2 = _interopRequireDefault(_request);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var ServerHandler = function () {
+	    function ServerHandler() {
+	        _classCallCheck(this, ServerHandler);
+	    }
+	
+	    _createClass(ServerHandler, [{
+	        key: 'sendRequest',
+	        value: function sendRequest(state) {
+	            var request = new _request2.default(state);
+	            return fetch('https://jeex.us/app/hadarim/shoot/' + state + '.php', request).then(function (res) {
+	                return res.text();
+	            });
+	        }
+	    }, {
+	        key: 'renderResponse',
+	        value: function renderResponse(el) {}
+	    }]);
+	
+	    return ServerHandler;
+	}();
+	
+	exports.default = ServerHandler;
+
+/***/ },
+/* 6 */
+/*!************************!*\
+  !*** ./src/request.js ***!
+  \************************/
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
-	var deviceDownDegs = 90;
-	var threshold = 15;
-	var waitTime = 3;
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Request = function Request(state) {
+	    _classCallCheck(this, Request);
+	
+	    this.method = 'GET';
+	    this.url = 'https://jeex.us/app/hadarim/shoot/';
+	};
+	
+	exports.default = Request;
 
 /***/ }
 /******/ ]);
