@@ -65,10 +65,10 @@ exports.putGame = function(req, res) {
 // Create endpoint /api/games/:game_id for DELETE
 exports.deleteGame = function(req, res) {
   // Use the Game model to find a specific game and remove it
-  Beer.findByIdAndRemove(req.params.game_id, function(err) {
+  Game.findByIdAndRemove(req.params.game_id, function(err) {
     if (err)
       res.send(err);
 
-    res.json({ message: 'Beer removed from the locker!' });
+    res.json({ message: 'Game removed from the locker!' });
   });
 };
