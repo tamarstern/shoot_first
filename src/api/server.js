@@ -2,7 +2,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
-var gameController = require('./controllers/game');
+var gameController = require('./controllers/gameController');
 
 // Connect to the gamelocker MongoDB
 mongoose.connect('mongodb://localhost:27017/shootGame');

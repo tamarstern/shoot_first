@@ -7,4 +7,4 @@ var GameSchema   = new mongoose.Schema({
 });
 
 // Export the Mongoose model
-module.exports = mongoose.model('Game', UserSchema);
+module.exports = mongoose.model('Game', GameSchema);
