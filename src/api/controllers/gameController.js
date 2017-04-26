@@ -7,10 +7,7 @@ exports.postGames = function(req, res) {
   var game = new Game();
 
   // Set the game properties that came from the POST data
-  game.name = req.body.name;
-  game.type = req.body.type;
-  game.quantity = req.body.quantity;
-
+  game.state = req.body.state;
   // Save the game and check for errors
   game.save(function(err) {
     if (err)
@@ -50,7 +47,7 @@ exports.putGame = function(req, res) {
       res.send(err);
 
     // Update the existing game quantity
-    game.quantity = req.body.quantity;
+    game.state = req.body.state;
 
     // Save the game and check for errors
     game.save(function(err) {
