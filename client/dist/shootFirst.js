@@ -277,7 +277,7 @@
 	        key: 'sendRequest',
 	        value: function sendRequest(state) {
 	            var request = new _request2.default(state);
-	            return fetch('https://jeex.us/app/hadarim/shoot/' + state + '.php', request).then(function (res) {
+	            return fetch('http://localhost:3000/api/games', request).then(function (res) {
 	                return res.text();
 	            });
 	        }
