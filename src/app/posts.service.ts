@@ -8,8 +8,12 @@ export class PostsService {
   constructor(private http: Http) { }
 
   // Get all posts from the API
-  getAllPosts() {
+  getAllGames() {
     return this.http.get('/api/games')
+      .map(res => res.json());
+  }
+  createGame(){
+    return this.http.post('/api/games', {})
       .map(res => res.json());
   }
 }
