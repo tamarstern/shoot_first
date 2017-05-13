@@ -1,18 +1,9 @@
 import { Component } from '@angular/core';
-import { PostsService } from './posts.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'user-invite',
+  templateUrl: './invite.friend.component.html'
 })
-export class AppComponent {
-  constructor(private postsService: PostsService){}
-  title = 'Welcome!';
-  posts = {};
-  startGame(): void {
-    this.postsService.createGame().subscribe(posts => {
-      this.posts = posts;
-    })
-  }
+export class InviteFriend {
+  title = 'Invite a friend!';
 }

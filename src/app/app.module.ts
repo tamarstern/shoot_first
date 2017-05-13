@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
+import { InviteFriend } from './invite.friend.component';
 import { PostsComponent } from './posts/posts.component';
 
 import { PostsService } from './posts.service';
@@ -17,6 +18,10 @@ const ROUTES = [
     pathMatch: 'full'
   },
   {
+    path: 'invite-friend',
+    component: InviteFriend
+  },
+  {
     path: 'posts',
     component: PostsComponent
   }
@@ -25,6 +30,7 @@ const ROUTES = [
 @NgModule({
   declarations: [
     AppComponent,
+    InviteFriend,
     PostsComponent
   ],
   imports: [
